@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Jarak extends StatelessWidget {
-  const Jarak({super.key});
+  final double jarak;
+  final bool isHoriz;
+  const Jarak({super.key, required this.jarak, required this.isHoriz});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 24,
+      width: isHoriz ? jarak : 0,
+      height: isHoriz ? 0 : jarak,
     );
   }
 }

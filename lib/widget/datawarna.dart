@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Datawarna {
-  static const Color primaryColor = Color(0xFF171717);
-  static const Color secondaryColor = Color(0xFF262626);
+  static const Color primaryColor = Colors.cyan;
+  static const Color secondaryColor = Color.fromARGB(255, 255, 123, 0);
+  static const Color tertiaryColor = Color.fromARGB(255, 214, 112, 34);
+  static const Color hitam = Colors.black;
+  static const Color putih = Colors.white;
+  static Color abu = Colors.black.withOpacity(0.7);
+
+  static const Color bg = Color.fromARGB(255, 244, 251, 255);
 
   static const LinearGradient warnaGradasi = LinearGradient(colors: []);
 }
@@ -15,7 +21,10 @@ var theme = ThemeData(
     backgroundColor: Color.fromARGB(255, 238, 249, 255),
     foregroundColor: Colors.black,
   ),
-  // primaryColor: const Color(0xFF0C5280),
-  // primaryColorDark: Colors.blue[700],
-  // primaryColorLight: Colors.blue[100],
+  inputDecorationTheme: const InputDecorationTheme(
+    border: OutlineInputBorder(),
+    prefixIconColor: Datawarna.tertiaryColor,
+    suffixIconColor: Datawarna.tertiaryColor,
+  ),
+  
 );

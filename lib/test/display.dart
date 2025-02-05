@@ -50,33 +50,7 @@ class _DisplayFormState extends State<DisplayForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FormSoal(
-                width: width,
-                height: height,
-                node: FocusNode(),
-                nomorSoal: 1,
-              ),
-              Jarak(),
-              FormSoal(
-                width: width,
-                height: height,
-                node: FocusNode(),
-                nomorSoal: 1,
-              ),
-              Jarak(),
-              FormSoal(
-                width: width,
-                height: height,
-                node: FocusNode(),
-                nomorSoal: 1,
-              ),
-              Jarak(),
-              FormSoal(
-                width: width,
-                height: height,
-                node: FocusNode(),
-                nomorSoal: 1,
-              ),
+             
             ],
           ),
         ),

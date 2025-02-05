@@ -1,13 +1,13 @@
 # soalbios2
 
+Screen Flow:
+Main Dart -> Login/Aktivasi -> SplashScreen|CheckUser -> 
+
 ## Getting Started
-Student must ACTIVATE the Account with the Unique Code that is given by the Mentor.
+# English
+1. Student must ACTIVATE the Account with the Unique Code that is given by the Mentor.
+2. Student only can login with 2 device, if more than 2 device the account cannot logged in new device.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Indonesia
+1. Mahasiswa harus melakukan aktivasi akun dengan menggunakan kode unik yang diberikan oleh Mentor.
+2. Mahasiswa hanya dapat login dengan 2 device, jika lebih dari 2 device maka akun tidak dapat login di device baru.
