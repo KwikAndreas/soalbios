@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soalbios2/components/input.dart';
 import 'package:soalbios2/components/jarak.dart';
 import 'package:soalbios2/components/tombol.dart';
 import 'package:soalbios2/page/auth/aktivasi.dart';
-import 'package:soalbios2/page/user/home.dart';
+import 'package:soalbios2/page/user/admin/index_adm.dart';
+import 'package:soalbios2/page/user/student/homeStudent.dart';
 import 'package:soalbios2/widget/datawarna.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -26,9 +30,75 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode passFocus = FocusNode();
   final FocusNode loginFocus = FocusNode();
 
-  void login() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomeSoalBIOS()));
+  void login() async {
+    String nim = _nimController.text;
+    String email = '$nim@student.ubm.ac.id';
+    String password = _passwordController.text;
+
+    List<String> specialNIMs = [
+      "32230111@admin.ubm.ac.id",
+      "32230099@admin.ubm.ac.id",
+      "32230110@admin.ubm.ac.id",
+    ];
+
+    try {
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('student').doc(nim).get();
+
+      if (!userDoc.exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Akun tidak ditemukan!")),
+        );
+        return;
+      }
+
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+
+      bool isActive = userData['isActive'] ?? false;
+      int device = userData['device'] ?? 0;
+
+      if (!isActive) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Akun belum aktif!")),
+        );
+        return;
+      }
+
+      if (device <= 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Device limit sudah habis!")),
+        );
+        return;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('student')
+          .doc(nim)
+          .update({'device': device - 1});
+
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('nim', nim);
+      await prefs.setBool('isLoggedIn', true);
+
+      if (nim.contains('@admin.ubm.ac.id')) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeStudent()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const IndexAdm()),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login gagal: ${e.toString()}")),
+      );
+    }
   }
 
   @override
@@ -73,9 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Datawarna.secondaryColor,
                           shadows: [
                             Shadow(
-                              color: Colors.black87,
-                              blurRadius: 2,
-                              offset: Offset(1, -1),
+                              color: Datawarna.hitam,
+                              blurRadius: 3,
+                              offset: Offset(1.25, -1.25),
                             ),
                           ],
                         ),

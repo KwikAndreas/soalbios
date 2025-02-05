@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Datawarna {
-  static const Color primaryColor = Colors.cyan;
+  static const Color primaryColor = Color.fromARGB(255, 35, 221, 245);
   static const Color secondaryColor = Color.fromARGB(255, 255, 123, 0);
   static const Color tertiaryColor = Color.fromARGB(255, 214, 112, 34);
   static const Color hitam = Colors.black;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soalbios2/components/jarak.dart';
@@ -24,9 +25,66 @@ class _AktivasiState extends State<Aktivasi> {
   final double inputWidth = 400;
   final double inputHeight = 64;
 
-  void aktivasiAkun() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomeSoalBIOS()));
+  bool isActive = false;
+
+  void aktivasiAkun() async {
+    String nim = _nimController.text.trim();
+
+    String uniqueCode = _uniqueCodeController.text;
+
+    if (nim.isEmpty || uniqueCode.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('NIM dan Kode Aktivasi harus diisi!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    try {
+      var querySnapshot = await FirebaseFirestore.instance
+          .collection('student')
+          .where('nim', isEqualTo: nim)
+          .where('uniqueCode', isEqualTo: uniqueCode)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        setState(() {
+          isActive = true;
+        });
+
+        await FirebaseFirestore.instance
+            .collection('student')
+            .doc(querySnapshot.docs.first.id)
+            .update({'isActive': true});
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Akun berhasil diaktivasi!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('NIM atau Kode Aktivasi salah!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Terjadi kesalahan: $e'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
@@ -73,9 +131,9 @@ class _AktivasiState extends State<Aktivasi> {
                           color: Datawarna.secondaryColor,
                           shadows: [
                             Shadow(
-                              color: Colors.black87,
-                              blurRadius: 2,
-                              offset: Offset(1, -1),
+                              color: Datawarna.hitam,
+                              blurRadius: 3,
+                              offset: Offset(1.25, -1.25),
                             ),
                           ],
                         ),
@@ -91,6 +149,7 @@ class _AktivasiState extends State<Aktivasi> {
                 child: TextFormField(
                   controller: _nimController,
                   focusNode: nimFocus,
+                  keyboardType: TextInputType.number,
                   cursorColor: Datawarna.secondaryColor,
                   decoration: InputDecoration(
                     hintText: 'Masukkan NIM',

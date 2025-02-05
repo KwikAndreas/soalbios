@@ -23,6 +23,7 @@ class InputUID extends StatelessWidget {
       child: TextFormField(
         focusNode: node,
         controller: controller,
+        keyboardType: TextInputType.number,
         cursorColor: Datawarna.secondaryColor,
         decoration: InputDecoration(
           hintText: "Masukkan NIM",

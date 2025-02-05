@@ -3,7 +3,7 @@
 ## 📌 Screen Flow
 
 ```
-Main Dart -> Login / Aktivasi -> SplashScreen | CheckUser
+Main Dart -> Login / Aktivasi -> SplashScreen | CheckUser(isStudent? -> HomeStudent | isMentor -> HomeMentor)
 ```
 
 ---
