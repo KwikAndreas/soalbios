@@ -8,7 +8,7 @@ Main Dart -> Login / Aktivasi -> SplashScreen | CheckUser
 
 ---
 
-# 🌍 English
+# 🇺🇸 English
 
 ## 🧑‍🎓 A. Student
 
