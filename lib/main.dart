@@ -9,21 +9,17 @@ import 'package:soalbios2/widget/datawarna.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: const FirebaseOptions(
-          apiKey: "AIzaSyCXwGFpkJ5LrVbROqyda93_VuFacjMq2mM",
-          appId: "1:316111481137:web:3dae3dafe7d8faae9b6810",
-          messagingSenderId: "316111481137",
-          projectId: "soalbios",
-        ),
-      );
-    }
-    runApp(const SoalBIOS());
-  } catch (e) {
-    print("Firebase Initialization Error: $e");
-  }
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyCXwGFpkJ5LrVbROqyda93_VuFacjMq2mM",
+      authDomain: "soalbios.firebaseapp.com",
+      projectId: "soalbios",
+      storageBucket: "soalbios.firebasestorage.app",
+      messagingSenderId: "316111481137",
+      appId: "1:316111481137:web:3dae3dafe7d8faae9b6810",
+    ),
+  );
+  runApp(const SoalBIOS());
 }
 
 class SoalBIOS extends StatelessWidget {
