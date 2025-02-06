@@ -25,6 +25,7 @@ class InputUID extends StatelessWidget {
         controller: controller,
         keyboardType: TextInputType.number,
         cursorColor: Datawarna.secondaryColor,
+        maxLength: 8,
         decoration: InputDecoration(
           hintText: "Masukkan NIM",
           hintStyle: TextStyle(

@@ -8,8 +8,12 @@ class CreateQuiz extends StatefulWidget {
 }
 
 class _CreateQuizState extends State<CreateQuiz> {
+  
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final double cardWidth = screenWidth * 0.8;
     return Scaffold();
   }
 }

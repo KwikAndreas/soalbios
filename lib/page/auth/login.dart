@@ -32,16 +32,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login() async {
     String nim = _nimController.text;
-    String email = '$nim@student.ubm.ac.id';
+    String email =
+        nim == "32230111" ? "$nim@admin.ubm.ac.id" : "$nim@student.ubm.ac.id";
     String password = _passwordController.text;
 
-    List<String> specialNIMs = [
-      "32230111@admin.ubm.ac.id",
-      "32230099@admin.ubm.ac.id",
-      "32230110@admin.ubm.ac.id",
-    ];
-
     try {
+      if (nim == "32230111") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('nim', nim);
+        await prefs.setBool('isLoggedIn', true);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const IndexAdm()),
+        );
+        return;
+      }
+
       DocumentSnapshot userDoc =
           await FirebaseFirestore.instance.collection('student').doc(nim).get();
 
@@ -58,8 +65,25 @@ class _LoginScreenState extends State<LoginScreen> {
       int device = userData['device'] ?? 0;
 
       if (!isActive) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Akun belum aktif!")),
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Akun Belum Aktif"),
+            content: const Text(
+                "Akun Anda belum aktif. Silakan aktifkan akun terlebih dahulu."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Aktivasi()),
+                  );
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
         );
         return;
       }
@@ -83,17 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString('nim', nim);
       await prefs.setBool('isLoggedIn', true);
 
-      if (nim.contains('@admin.ubm.ac.id')) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeStudent()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const IndexAdm()),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeStudent()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Login gagal: ${e.toString()}")),

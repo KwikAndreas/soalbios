@@ -19,7 +19,7 @@ class _GenerateState extends State<Generate> {
   final TextEditingController _tambahakunController = TextEditingController();
   final FocusNode tambah = FocusNode();
   List<Map<String, TextEditingController>> _accounts = [];
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -29,11 +29,12 @@ class _GenerateState extends State<Generate> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
   void _startAutoFetch() {
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
       setState(() {});
     });
@@ -77,6 +78,13 @@ class _GenerateState extends State<Generate> {
       int score = 0;
       int device = 2;
       bool isActive = false;
+
+      if (nim.isEmpty || nama.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Data tidak boleh kosong!')),
+        );
+        continue;
+      }
 
       try {
         UserCredential userCredential =
@@ -175,6 +183,16 @@ class _GenerateState extends State<Generate> {
                               itemBuilder: (context, index) {
                                 var student = students[index].data()
                                     as Map<String, dynamic>;
+                                String nim = student['nim'] != null &&
+                                        student['nim'] is String
+                                    ? student['nim'] as String
+                                    : 'N/A';
+
+                                String uniqueCode =
+                                    student['uniqueCode'] != null
+                                        ? student['uniqueCode'] as String
+                                        : 'Unknown';
+
                                 return Container(
                                   width: 270,
                                   height: 96,
@@ -193,7 +211,7 @@ class _GenerateState extends State<Generate> {
                                       ),
                                       const Jarak(jarak: 20, isHoriz: true),
                                       Text(
-                                        student['nim'],
+                                        nim,
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w300,
@@ -209,7 +227,7 @@ class _GenerateState extends State<Generate> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              student['uniqueCode'],
+                                              uniqueCode,
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w300,
@@ -217,20 +235,21 @@ class _GenerateState extends State<Generate> {
                                             ),
                                             IconButton(
                                               onPressed: () {
-                                                Clipboard.setData(
-                                                  ClipboardData(
-                                                    text: student['uniqueCode'],
-                                                  ),
-                                                );
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Copied: ${student['uniqueCode']}'),
-                                                    duration: const Duration(
-                                                        seconds: 2),
-                                                  ),
-                                                );
+                                                if (uniqueCode != 'Unknown') {
+                                                  Clipboard.setData(
+                                                    ClipboardData(
+                                                        text: uniqueCode),
+                                                  );
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Copied: $uniqueCode'),
+                                                      duration: const Duration(
+                                                          seconds: 2),
+                                                    ),
+                                                  );
+                                                }
                                               },
                                               icon: const Icon(
                                                 Icons.copy,
@@ -357,12 +376,15 @@ class _GenerateState extends State<Generate> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
                                       child: TextField(
                                         controller: _accounts[index]['nim'],
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.digitsOnly,
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
                                         ],
                                         maxLength: 8,
                                         decoration: const InputDecoration(

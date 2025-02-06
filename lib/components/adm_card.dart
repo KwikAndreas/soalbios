@@ -121,7 +121,7 @@ class Kotaktop extends StatelessWidget {
               namaTop,
               maxLines: 1,
               minFontSize: 14,
-              maxFontSize: 36,
+              maxFontSize: 32,
               style: const TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,

@@ -23,7 +23,7 @@ class _IndexAdmState extends State<IndexAdm> {
     'Generate': const Generate(),
     'Quiz': const CreateQuiz(),
   };
-  String _selectedPage = 'Generate';
+  String _selectedPage = 'Home';
 
   double iconSize = 27;
 

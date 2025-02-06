@@ -150,6 +150,8 @@ class _AktivasiState extends State<Aktivasi> {
                   controller: _nimController,
                   focusNode: nimFocus,
                   keyboardType: TextInputType.number,
+                  
+                  maxLength: 8,
                   cursorColor: Datawarna.secondaryColor,
                   decoration: InputDecoration(
                     hintText: 'Masukkan NIM',

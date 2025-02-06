@@ -9,15 +9,18 @@ import 'package:soalbios2/widget/datawarna.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  FirebaseOptions options = const FirebaseOptions(
+    apiKey: "AIzaSyCXwGFpkJ5LrVbROqyda93_VuFacjMq2mM",
+    authDomain: "soalbios.firebaseapp.com",
+    projectId: "soalbios",
+    storageBucket: "soalbios.firebasestorage.app",
+    messagingSenderId: "316111481137",
+    appId: "1:316111481137:web:3dae3dafe7d8faae9b6810",
+  );
+
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyCXwGFpkJ5LrVbROqyda93_VuFacjMq2mM",
-      authDomain: "soalbios.firebaseapp.com",
-      projectId: "soalbios",
-      storageBucket: "soalbios.firebasestorage.app",
-      messagingSenderId: "316111481137",
-      appId: "1:316111481137:web:3dae3dafe7d8faae9b6810",
-    ),
+    options: options,
   );
   runApp(const SoalBIOS());
 }
